@@ -21,6 +21,7 @@ app.use(cors({
     'cache-control',
   ],
 }));
+// ..
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
