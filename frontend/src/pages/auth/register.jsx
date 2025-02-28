@@ -1,7 +1,10 @@
+import { useDispatch } from 'react-redux';
 import CommonForm from '../../components/common/commonForm';
 import { registerFormControl } from '../../config/index.js';
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { registerUser } from '../../store/auth-slice/authSlice';
+import toast from 'react-hot-toast';
 
 const initialState = {
   userName: "",
@@ -11,8 +14,19 @@ const initialState = {
 
 const Register = () => {
   const [formData, setFormData] = useState(initialState);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleOnSubmit = (event) => {
     event.preventDefault();
+    dispatch(registerUser(formData)).then((data) => {
+      console.log(data);
+      if(data.payload.success){
+        toast.success(data?.payload?.message);
+        navigate('/auth/login');
+      }else{
+        toast.error(data?.error?.message || data?.payload?.message);
+      }
+    });
   }
   
   return (

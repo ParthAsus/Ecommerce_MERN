@@ -14,14 +14,19 @@ import ShoppingCheckoutPage from "./pages/shopping-view/shoppingCheckoutPage"
 import ShoppingHomePage from "./pages/shopping-view/shoppingHomePage"
 import ShoppingListingPage from "./pages/shopping-view/shoppingListingPage"
 import CheckAuth from "./components/common/checkAuth"
+import { Toaster } from "react-hot-toast"
+import { useSelector } from "react-redux"
 
 function App() {
 
-  const isAuthenticated = false;
-  const user = {
-    name: "John Doe",
-    role: 'admin'
-  };
+  // const isAuthenticated = false;
+  // const user = {
+  //   name: "John Doe",
+  //   role: 'admin'
+  // };
+
+  const {isAuthenticated, user, isLoading} = useSelector((state) => state.auth_slice);
+  console.log(isAuthenticated, user);
   return (
     <>
       <div className="flex flex-col overflow-hidden bg-white">
@@ -67,6 +72,8 @@ function App() {
 
         </Routes>
       </div>
+
+      <Toaster />
     </>
   )
 }

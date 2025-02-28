@@ -26,7 +26,8 @@ const CommonForm = ({ formControls, formData, setFormData, onSubmit, buttonText 
           name={getControlItems.name} 
           placeholder={getControlItems.placeholder} 
           id={getControlItems.name} 
-          type={getControlItems.type} 
+          type={getControlItems.type}
+          required
           />
         )
         break;
@@ -37,7 +38,7 @@ const CommonForm = ({ formControls, formData, setFormData, onSubmit, buttonText 
           <Select onValueChange={(value) => setFormData({
             ...formData,
             [getControlItems.name]: value
-          })}>
+          })} required>
             <SelectTrigger className='w-full'>
               <SelectValue placeholder={getControlItems.placeholder} />
             </SelectTrigger>
@@ -59,7 +60,9 @@ const CommonForm = ({ formControls, formData, setFormData, onSubmit, buttonText 
           })} 
           name={getControlItems.name} 
           placeholder={getControlItems.placeholder} 
-          id={getControlItems.name}  />
+          id={getControlItems.name}  
+          required
+          />
         )
         break;
   
