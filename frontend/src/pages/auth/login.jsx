@@ -17,9 +17,9 @@ const Login = () => {
   const dispatch = useDispatch();
   const handleOnSubmit = (event) => {
     event.preventDefault();
-    console.log(formData);
+    // console.log(formData);
     dispatch(loginUser(formData)).then((data) => {
-      console.log(data);
+      // console.log(data);
       if(data?.payload?.success){
         toast.success(data?.payload?.message);
       }else{

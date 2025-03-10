@@ -1,6 +1,7 @@
 import { generateCookieToken } from "../../lib/generateToken.js";
 import User from "../../models/user.model.js";
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 
 // Signup
@@ -80,5 +81,44 @@ export const login = async(req, res) => {
       message: 'Internal Server error'});
   }
 };
+
+// logout
+export const logout = async(req, res) => {
+  try {
+    res.clearCookie('auth_jwt').json({
+      success: true, 
+      message: 'Logged out successfully',
+    }); 
+  } catch (error) {
+    console.log('Error in auth/logout controller', error);
+    res.status(400).json({
+      success: false,
+      message: 'Unable to logged out'
+    });
+  }
+};
+
+// auth middleware
+export const authMiddleware = async(req, res, next) => {
+  const token = req.cookies.auth_jwt;
+  if(!token) res.status(401).json({
+    success: false,
+    message: 'Unauthorised User!'
+  });
+
+  try {
+    const decoded = jwt.verify(token, process.env.COOKIE_SECRET);
+    req.user = decoded;
+    next();
+  } catch (error) {
+    console.log('Error in authMiddleware');
+    res.status(401).json({
+      success: false,
+      message: 'Unauthorised User!'
+    });
+  }
+};
+
+
 
 

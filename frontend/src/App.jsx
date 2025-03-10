@@ -15,18 +15,30 @@ import ShoppingHomePage from "./pages/shopping-view/shoppingHomePage"
 import ShoppingListingPage from "./pages/shopping-view/shoppingListingPage"
 import CheckAuth from "./components/common/checkAuth"
 import { Toaster } from "react-hot-toast"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { useEffect } from "react"
+import { checkAuth } from "./store/auth-slice/authSlice"
 
 function App() {
 
-  // const isAuthenticated = false;
+  // const isAuthenticated = true;
   // const user = {
   //   name: "John Doe",
-  //   role: 'admin'
+  //   role: 'shop'
   // };
 
   const {isAuthenticated, user, isLoading} = useSelector((state) => state.auth_slice);
-  console.log(isAuthenticated, user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(checkAuth());
+  }, [dispatch]);
+
+  if(isLoading){
+    return <h1>Loading..</h1>
+  }
+
+  // console.log(isAuthenticated, user?.role);
   return (
     <>
       <div className="flex flex-col overflow-hidden bg-white">

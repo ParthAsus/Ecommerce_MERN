@@ -2,7 +2,7 @@ import { Navigate, useLocation } from "react-router-dom"
 
 
 const CheckAuth = ({ isAuthenticated, user, children }) => {
-  // console.log(isAuthenticated, user);
+  // console.log(isAuthenticated, user?.role);
   const locationOfRoute = useLocation();
 
   // if user not authenticated and try to access "routes" other then login and register
