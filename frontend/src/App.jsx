@@ -21,13 +21,13 @@ import { checkAuth } from "./store/auth-slice/authSlice"
 
 function App() {
 
-  // const isAuthenticated = true;
-  // const user = {
-  //   name: "John Doe",
-  //   role: 'shop'
-  // };
+  const isAuthenticated = true;
+  const user = {
+    name: "John Doe",
+    role: 'admin'
+  };
 
-  const {isAuthenticated, user, isLoading} = useSelector((state) => state.auth_slice);
+  const {isLoading} = useSelector((state) => state.auth_slice);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -42,8 +42,6 @@ function App() {
   return (
     <>
       <div className="flex flex-col overflow-hidden bg-white">
-        <h1>Common Componenets</h1>
-
         <Routes>
           <Route path="*" element={<NotFoundPage />} />
 

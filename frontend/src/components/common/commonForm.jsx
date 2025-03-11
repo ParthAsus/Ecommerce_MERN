@@ -1,8 +1,8 @@
 import React from 'react'
 import { Label } from '../ui/label'
 import { Input } from '../ui/input';
-import { Select } from '../ui/select';
-import { SelectContent, SelectItem, SelectTrigger, SelectValue } from '@radix-ui/react-select';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+// import { SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@radix-ui/react-select';
 import { Textarea } from '../ui/textarea';
 import { Button } from '../ui/button';
 
@@ -35,18 +35,29 @@ const CommonForm = ({ formControls, formData, setFormData, onSubmit, buttonText 
       // for "select"  
       case "select":
         element = (
-          <Select onValueChange={(value) => setFormData({
-            ...formData,
-            [getControlItems.name]: value
-          })} required>
-            <SelectTrigger className='w-full'>
-              <SelectValue placeholder={getControlItems.placeholder} />
+          <Select
+            onValueChange={(value) =>
+              setFormData({
+                ...formData,
+                [getControlItems.name]: value,
+              })
+            }
+            value={value}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder={getControlItems.label} />
             </SelectTrigger>
-            <SelectContent>
-              {getControlItems.options && getControlItems.options.length > 0 ? getControlItems.options.map((optionItems) => <SelectItem key={optionItems.id} value={optionItems.id}>{optionItems.label}</SelectItem>) : null}
+            <SelectContent className="overflow-hidden bg-white">
+              {getControlItems.options && getControlItems.options.length > 0
+                ? getControlItems.options.map((optionItem) => (
+                    <SelectItem key={optionItem.id} value={optionItem.id}>
+                      {optionItem.label}
+                    </SelectItem>
+                  ))
+                : null}
             </SelectContent>
           </Select>
-        )
+        );
         break;
       
       // for "textarea"  
