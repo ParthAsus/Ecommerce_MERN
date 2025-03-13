@@ -33,7 +33,8 @@ export const checkAuth = createAsyncThunk('auth/check-auth', async() => {
       }
     });
     return response.data; 
-  } catch (error) {  
+
+  } catch (error) { 
     return error.response.data
   }
 });
@@ -89,6 +90,7 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
     })
   },
+
 
 });
 
