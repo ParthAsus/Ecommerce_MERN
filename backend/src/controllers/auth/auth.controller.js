@@ -99,13 +99,16 @@ export const logout = async(req, res) => {
 };
 
 // auth middleware
-export const authMiddleware = async(req, res, next) => {
-  const token = req.cookies.auth_jwt;
-  if(!token) res.status(401).json({
-    success: false,
-    message: 'Unauthorised User!'
-  });
 
+export const authMiddleware = async (req, res, next) => {
+  const token = req.cookies.auth_jwt;
+
+  if (!token) {
+    return res.status(401).json({
+      success: false,
+      message: 'Unauthorized User!'
+    });
+  }
   try {
     const decoded = jwt.verify(token, process.env.COOKIE_SECRET);
     req.user = decoded;
@@ -118,7 +121,5 @@ export const authMiddleware = async(req, res, next) => {
     });
   }
 };
-
-
 
 

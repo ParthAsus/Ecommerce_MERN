@@ -28,17 +28,7 @@ function App() {
   };
 
   const {isLoading} = useSelector((state) => state.auth_slice);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(checkAuth());
-  }, [dispatch]);
-
-  if(isLoading){
-    return <h1>Loading..</h1>
-  }
-
-  // console.log(isAuthenticated, user?.role);
+  console.log(isAuthenticated, user);
   return (
     <>
       <div className="flex flex-col overflow-hidden bg-white">

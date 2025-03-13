@@ -35,7 +35,7 @@ const ProductImageUpload = ({imageFile, setImageFile, uploadedImageUrl, setUploa
     const data = new FormData();
     data.append('my_file', imageFile);
     const response = await axiosInstance.post('/admin/prodcuts/upload-image', data);
-    // console.log(response);
+    console.log(response);
     if(response.data?.success){
       setUploadedImageUrl(response.data?.result?.url);
       setImageLoadingState(false);

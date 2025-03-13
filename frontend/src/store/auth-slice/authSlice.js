@@ -24,6 +24,7 @@ export const loginUser = createAsyncThunk('auth/login', async(formData) => {
   }
 });
 
+
 export const checkAuth = createAsyncThunk('auth/check-auth', async() => {
   try {
     const response = await axiosInstance.get('/auth/check-auth', {}, {
@@ -32,7 +33,7 @@ export const checkAuth = createAsyncThunk('auth/check-auth', async() => {
       }
     });
     return response.data; 
-  } catch (error) { 
+  } catch (error) {  
     return error.response.data
   }
 });
@@ -55,23 +56,25 @@ const authSlice = createSlice({
       state.isLoading = false;
       state.isAuthenticated = false;
     });
-  },
 
-  // for login
-  extraReducers: (builder) => {
+     // for login
     builder.addCase(loginUser.pending, (state) => {
       state.isLoading = true;
     }).addCase(loginUser.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.user = action.payload.success ? action.payload.user : null;
-      state.isAuthenticated = action.payload.success ? true : null;
+      if (action.payload.success) {
+        state.user = action.payload.user;
+        state.isAuthenticated = true;
+      } else {
+        state.user = null;
+        state.isAuthenticated = false;
+      }
     }).addCase(loginUser.rejected, (state) => {
       state.isLoading = false;
     });
-  },
+
 
   // for check-auth
-  extraReducers: (builder) => {
     builder.addCase(checkAuth.pending, (state) => {
       state.isLoading = true;
     })
@@ -85,7 +88,7 @@ const authSlice = createSlice({
       state.user = null;
       state.isAuthenticated = false;
     })
-  }
+  },
 
 });
 
