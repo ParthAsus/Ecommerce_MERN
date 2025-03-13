@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import { connectDb } from './lib/db.js';
 import dotenv from 'dotenv'
 import authRoutes from './routes/auth/auth.route.js'
+import adminProductsRoute from './routes/admin/products-routes.js'
 
 dotenv.config();
 
@@ -28,6 +29,8 @@ app.use(cookieParser());
 
 // routes
 app.use("/api/auth", authRoutes);
+app.use("/api/admin/prodcuts", adminProductsRoute);
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

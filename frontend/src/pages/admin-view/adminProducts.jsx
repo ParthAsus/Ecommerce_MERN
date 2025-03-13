@@ -25,6 +25,7 @@ const AdminProductsPage = () => {
   const [formData, setFormData] = useState(initialFormData);
   const [imageFile, setImageFile] = useState(null);
   const [uploadedImageUrl, setUploadedImageUrl] = useState('');
+  const [imageLoadingState, setImageLoadingState] = useState(false);
   return (
     <Fragment>
       <div className='mb-5 flex justify-end w-full'>
@@ -40,7 +41,7 @@ const AdminProductsPage = () => {
              Add New Product 
             </SheetTitle>
           </SheetHeader>
-          <ProductImageUpload imageFile={imageFile} setImageFile={setImageFile} uploadedImageUrl={uploadedImageUrl} setUploadedImageUrl={setUploadedImageUrl} />
+          <ProductImageUpload imageFile={imageFile} setImageFile={setImageFile} uploadedImageUrl={uploadedImageUrl} setUploadedImageUrl={setUploadedImageUrl} setImageLoadingState={setImageLoadingState}/>
           <div className='py-6'>
             <CommonForm 
               formControls={addProductFormElements}

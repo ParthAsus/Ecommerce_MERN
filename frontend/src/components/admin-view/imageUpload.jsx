@@ -1,10 +1,11 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Label } from '../ui/label'
 import { Input } from '../ui/input'
-import { FileIcon, UploadCloudIcon, XIcon } from 'lucide-react';
+import { FileIcon, Rss, UploadCloudIcon, XIcon } from 'lucide-react';
 import { Button } from '../ui/button';
+import { axiosInstance } from '../../lib/axios';
 
-const ProductImageUpload = ({imageFile, setImageFile, uploadedImageUrl, setUploadedImageUrl}) => {
+const ProductImageUpload = ({imageFile, setImageFile, uploadedImageUrl, setUploadedImageUrl, setImageLoadingState}) => {
   const inputRef = useRef(null);
   const handleImageFileChange = (event) => {
     console.log(event.target.files);
@@ -27,7 +28,23 @@ const ProductImageUpload = ({imageFile, setImageFile, uploadedImageUrl, setUploa
     if(inputRef.current){
       inputRef.current.value = "";
     }
+  };
+
+  async function uploadImageToCloudinary(){
+    setImageLoadingState(true);
+    const data = new FormData();
+    data.append('my_file', imageFile);
+    const response = await axiosInstance.post('/admin/prodcuts/upload-image', data);
+    // console.log(response);
+    if(response.data?.success){
+      setUploadedImageUrl(response.data?.result?.url);
+      setImageLoadingState(false);
+    }
   }
+
+  useEffect(() => {
+    if(imageFile !== null) uploadImageToCloudinary();
+  }, [imageFile]);
   return (
     <div className='w-full max-w-md mx-auto mt-4'>
       <Label className="text-lg font-semibold mb-2 block">Upload Image</Label>
@@ -49,12 +66,12 @@ const ProductImageUpload = ({imageFile, setImageFile, uploadedImageUrl, setUploa
               </div>
               <p className='text-sm font-medium'>{imageFile.name}</p>
               <Button variant="ghost" size="icon" className="text-black hover:text-gray-800" onClick={handleRemoveImage}>
-                <XIcon/>
+                <XIcon/>  
                 <span className='sr-only'>Remove File</span>
               </Button>
             </div>
           )
-          }
+        }
       </div>
     </div>
   )
