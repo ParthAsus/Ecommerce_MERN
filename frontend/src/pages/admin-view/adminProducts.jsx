@@ -1,9 +1,12 @@
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '../../components/ui/sheet'
 import { Button } from '../../components/ui/button'
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import CommonForm from '../../components/common/commonForm';
 import { addProductFormElements } from '../../config/index';
 import ProductImageUpload from '../../components/admin-view/imageUpload';
+import { useDispatch } from 'react-redux';
+import { handleAddNewProduct, handleFetchAllProducts } from '../../store/admin/product-slice/index';
+import toast from 'react-hot-toast';
 
 const initialFormData = {
   image: null,
@@ -16,9 +19,6 @@ const initialFormData = {
   totalStock: '',
 };
 
-function onSubmit(){
-
-};
 
 const AdminProductsPage = () => {
   const [openCreateProductDialog, setOpenCreateProductDialog] = useState(false);
@@ -26,6 +26,32 @@ const AdminProductsPage = () => {
   const [imageFile, setImageFile] = useState(null);
   const [uploadedImageUrl, setUploadedImageUrl] = useState('');
   const [imageLoadingState, setImageLoadingState] = useState(false);
+  const dispatch = useDispatch();
+
+  function onSubmit(event){
+    event.preventDefault();
+    const newProductData = {...formData, image: uploadedImageUrl};
+    if(uploadedImageUrl !== ''){
+      dispatch(handleAddNewProduct(newProductData)).then((response) => {
+        if(response?.payload?.success){
+          dispatch(handleFetchAllProducts())
+          setImageFile(null);
+          setFormData(initialFormData);
+          setOpenCreateProductDialog(false);
+          toast.success(response?.payload?.message);
+        }else{
+          toast.error(response?.error?.message || response?.payload?.message);
+        }
+      })
+    }else{
+      toast.error("Image hasn't set, try uploading image again");
+    }
+  };
+
+  useEffect(() => {
+    dispatch(handleFetchAllProducts());
+  }, [dispatch]);
+
   return (
     <Fragment>
       <div className='mb-5 flex justify-end w-full'>

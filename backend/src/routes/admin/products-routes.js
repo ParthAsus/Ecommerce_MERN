@@ -12,4 +12,3 @@ router.get('/fetchAllProducts', handleFetchAllProducts);
 
 
 export default router;
-// vndvjnd

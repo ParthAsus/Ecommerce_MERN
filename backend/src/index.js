@@ -29,7 +29,7 @@ app.use(cookieParser());
 
 // routes
 app.use("/api/auth", authRoutes);
-app.use("/api/admin/prodcuts", adminProductsRoute);
+app.use("/api/admin/products", adminProductsRoute);
 
 
 app.listen(PORT, () => {

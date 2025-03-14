@@ -50,6 +50,7 @@ export const handleAddNewProduct = async (req, res) => {
     res.status(200).json({
       success: true,
       data: newlyCreatedProduct,
+      message: 'New product added successfully'
     });
   } catch (error) {
     console.log('Error in handleAddNewProduct', error);
@@ -68,12 +69,14 @@ export const handleFetchAllProducts = async (req, res) => {
     res.status(200).json({
       success: true,
       data: listOfProducts,
+      message: 'Loading products...'
     });
   } catch (error) {
     console.log('Error in handleFetchAllProducts', error);
     res.status(500).json({
       success: false,
       message: "Unable to fetch products at a moment, try again later...",
+      
     });
   }
 };
@@ -114,6 +117,7 @@ export const handleEditProduct = async (req, res) => {
     res.status(200).json({
       success: true,
       data: findProduct,
+      message: 'Product data updated successfully'
     });
   } catch (error) {
     console.log('Error in handleEditProduct', error);
