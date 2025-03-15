@@ -1,12 +1,13 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Label } from '../ui/label'
 import { Input } from '../ui/input'
 import { FileIcon, Rss, UploadCloudIcon, XIcon } from 'lucide-react';
 import { Button } from '../ui/button';
 import { axiosInstance } from '../../lib/axios';
 
-const ProductImageUpload = ({imageFile, setImageFile, uploadedImageUrl, setUploadedImageUrl, setImageLoadingState}) => {
+const ProductImageUpload = ({imageFile, setImageFile, uploadedImageUrl, setUploadedImageUrl, setImageLoadingState, currentEditedId, formData}) => {
   const inputRef = useRef(null);
+  const [newProductImage, setNewProductImage] = useState(false);
   const handleImageFileChange = (event) => {
     console.log(event.target.files);
     const selectedFile = event.target?.files[0];
@@ -25,10 +26,19 @@ const ProductImageUpload = ({imageFile, setImageFile, uploadedImageUrl, setUploa
 
   const handleRemoveImage = () => {
     setImageFile(null);
+    setUploadedImageUrl('');
+    setNewProductImage(true);
     if(inputRef.current){
       inputRef.current.value = "";
     }
   };
+
+  useEffect(() => {
+    if (currentEditedId) {
+      setUploadedImageUrl(formData?.image);
+      setImageFile(null);
+    }
+  }, [currentEditedId, formData]);
 
   async function uploadImageToCloudinary(){
     setImageLoadingState(true);
@@ -43,14 +53,14 @@ const ProductImageUpload = ({imageFile, setImageFile, uploadedImageUrl, setUploa
   }
 
   useEffect(() => {
-    if(imageFile !== null) uploadImageToCloudinary();
+    if(imageFile !== null ) uploadImageToCloudinary();
   }, [imageFile]);
   return (
     <div className='w-full max-w-md mx-auto mt-4'>
       <Label className="text-lg font-semibold mb-2 block">Upload Image</Label>
       <div onDragOver={handleDragOver} onDrop={handleDrop} className='border-2 border-dashed rounded-lg p-4 hover:border-gray-950 transition-all'>
         <Input id='image-upload' type='file' className='hidden' ref={inputRef} onChange={handleImageFileChange}/>
-        {!imageFile 
+        {!imageFile && (!uploadedImageUrl || newProductImage)
           ? 
           (
             <Label htmlFor="image-upload" className="flex flex-col items-center justify-center h-32 cursor-pointer" >
@@ -60,11 +70,11 @@ const ProductImageUpload = ({imageFile, setImageFile, uploadedImageUrl, setUploa
           ) 
           : 
           (
-            <div className='flex items-center justify-between'>
+            <div className='flex items-center justify-between gap-3'>
               <div className='flex items-center'>
                 <FileIcon className='w-8 h-8 text-black mr-2'/>
               </div>
-              <p className='text-sm font-medium'>{imageFile.name}</p>
+              <p className='text-sm font-medium overflow-hidden'>{imageFile?.name || formData?.image}</p>
               <Button variant="ghost" size="icon" className="text-black hover:text-gray-800" onClick={handleRemoveImage}>
                 <XIcon/>  
                 <span className='sr-only'>Remove File</span>

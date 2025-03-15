@@ -2,7 +2,7 @@ import { axiosInstance } from "../../../lib/axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  isLoading: false,
+  isLoading: true,
   productLists: [],
 }
 
@@ -18,7 +18,7 @@ export const handleAddNewProduct = createAsyncThunk('/admin/products/addNewProdu
 
 export const handleEditProduct = createAsyncThunk('/admin/products/editProduct', async({id, updatedProductData}) => {
   try {
-    const response = await axiosInstance.put(`/admin/products/edtProduct${id}`, updatedProductData, {headers: {'Content-Type': 'application/json'}});
+    const response = await axiosInstance.put(`/admin/products/editProduct/${id}`, updatedProductData, {headers: {'Content-Type': 'application/json'}});
     return response.data;
   } catch (error) {
     console.log('Error in handleEditProduct -> admin_product_slice', error);
@@ -55,7 +55,7 @@ const adminProductSlice = createSlice({
       state.isLoading = true;
     })
     .addCase(handleFetchAllProducts.fulfilled, (state, action) => {
-      console.log(action.payload);
+      // console.log(action.payload);
       state.isLoading = false;
       state.productLists = action.payload;
     })
