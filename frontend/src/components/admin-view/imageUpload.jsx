@@ -5,7 +5,7 @@ import { FileIcon, Rss, UploadCloudIcon, XIcon } from 'lucide-react';
 import { Button } from '../ui/button';
 import { axiosInstance } from '../../lib/axios';
 
-const ProductImageUpload = ({imageFile, setImageFile, uploadedImageUrl, setUploadedImageUrl, setImageLoadingState, currentEditedId, formData}) => {
+const ProductImageUpload = ({imageFile, setImageFile, uploadedImageUrl, setUploadedImageUrl, setImageLoadingState, currentEditedId, formData, setFormData}) => {
   const inputRef = useRef(null);
   const [newProductImage, setNewProductImage] = useState(false);
   const handleImageFileChange = (event) => {
@@ -53,8 +53,17 @@ const ProductImageUpload = ({imageFile, setImageFile, uploadedImageUrl, setUploa
   }
 
   useEffect(() => {
-    if(imageFile !== null ) uploadImageToCloudinary();
+    if(imageFile !== null ){
+      uploadImageToCloudinary();
+      setFormData((prev) => ({
+        ...prev,
+        image: imageFile,
+      }));
+    }
   }, [imageFile]);
+
+  // console.log(`image File ${imageFile}, uploadedImageUrl ${uploadedImageUrl}, newProductImage ${newProductImage}`)
+  
   return (
     <div className='w-full max-w-md mx-auto mt-4'>
       <Label className="text-lg font-semibold mb-2 block">Upload Image</Label>

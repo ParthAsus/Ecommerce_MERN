@@ -3,7 +3,7 @@ import { Card, CardContent, CardFooter } from '../ui/card';
 import { Button } from '../ui/button';
 import { SkeletonCard } from '../skeletons/skeleteonCard';
 
-const AdminProductTile = ({product, setCurrentEditedId, setFormData, setOpenCreateProductDialog}) => {
+const AdminProductTile = ({product, setCurrentEditedId, setFormData, setOpenCreateProductDialog, handleOnDelete}) => {
   return (
     <Card className="w-full max-w-sm mx-auto">
       <div>
@@ -26,7 +26,7 @@ const AdminProductTile = ({product, setCurrentEditedId, setFormData, setOpenCrea
               setCurrentEditedId(product?._id);
             }}
           >Edit</Button>
-          <Button>Delete</Button>
+          <Button onClick={() => handleOnDelete(product._id)}>Delete</Button>
         </CardFooter>
       </div>
     </Card>

@@ -28,7 +28,7 @@ export const handleEditProduct = createAsyncThunk('/admin/products/editProduct',
 
 export const handleDeleteProduct = createAsyncThunk('/admin/products/deleteProduct', async(id) => {
   try {
-    const response = await axiosInstance.delete(`/admin/products/deleteProduct${id}`);
+    const response = await axiosInstance.delete(`/admin/products/deleteProduct/${id}`);
     return response.data;
   } catch (error) {
     console.log('Error in handleDeleteProduct -> admin_product_slice', error);

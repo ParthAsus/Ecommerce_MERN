@@ -8,7 +8,7 @@ import { Button } from '../ui/button';
 
 
 
-const CommonForm = ({ formControls, formData, setFormData, onSubmit, buttonText }) => {
+const CommonForm = ({ formControls, formData, setFormData, onSubmit, buttonText, isButtonDisabled}) => {
 
   function renderInputBasedOnComponent(getControlItems) {
     let element = null;
@@ -111,7 +111,7 @@ const CommonForm = ({ formControls, formData, setFormData, onSubmit, buttonText 
           ))
         }
       </div>
-      <Button type="submit" className="mt-2 w-full bg-black text-white">{buttonText || 'Submit'}</Button>
+      <Button type="submit" disabled={isButtonDisabled} className="mt-2 w-full bg-black text-white">{buttonText || 'Submit'}</Button>
     </form>
   )
 }
