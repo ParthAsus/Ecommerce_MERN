@@ -61,7 +61,8 @@ export const login = async(req, res) => {
     if(!isPasswordCorrect){
       return res.status(400).json({message: 'Invalid email or password'});
     }else{
-      generateCookieToken(existingUser.role, existingUser.email, existingUser.password, res);
+      generateCookieToken(existingUser.role, existingUser.email, existingUser.userName, res);
+      // console.log('Existing user', existingUser);
       res.status(200).json({
         success: true,
         message: 'Logged in successfully',
@@ -111,6 +112,7 @@ export const authMiddleware = async (req, res, next) => {
   }
   try {
     const decoded = jwt.verify(token, process.env.COOKIE_SECRET);
+    // console.log(decoded);
     req.user = decoded;
     next();
   } catch (error) {

@@ -18,17 +18,28 @@ import { Toaster } from "react-hot-toast"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
 import { checkAuth } from "./store/auth-slice/authSlice"
+import { SkeletonCard } from "./components/skeletons/skeleteonCard"
 
 function App() {
 
-  const isAuthenticated = true;
-  const user = {
-    name: "John Doe",
-    role: 'admin'
-  };
+  // const isAuthenticated = true;
+  // const user = {
+  //   name: "John Doe",
+  //   role: 'admin'
+  // };
 
-  const {isLoading} = useSelector((state) => state.auth_slice);
-  console.log(isAuthenticated, user);
+  const {isAuthenticated, user, isLoading} = useSelector((state) => state.auth_slice);
+  // console.log(isAuthenticated, user);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(checkAuth());
+  }, [checkAuth]);
+
+  if(isLoading){
+    return <SkeletonCard className="w-[800] bg-black h-[600px]"/>
+  }
+
+  // console.log(isLoading);
   return (
     <>
       <div className="flex flex-col overflow-hidden bg-white">
