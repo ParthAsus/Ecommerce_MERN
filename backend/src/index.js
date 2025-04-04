@@ -5,6 +5,7 @@ import { connectDb } from './lib/db.js';
 import dotenv from 'dotenv'
 import authRoutes from './routes/auth/auth.route.js'
 import adminProductsRoute from './routes/admin/products-routes.js'
+import shopProductRoute from './routes/shop/product-route.js'
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ app.use(cookieParser());
 // routes
 app.use("/api/auth", authRoutes);
 app.use("/api/admin/products", adminProductsRoute);
+app.use("/api/shop/products", shopProductRoute);
 
 
 app.listen(PORT, () => {

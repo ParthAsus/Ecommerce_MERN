@@ -1,11 +1,20 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from '../../components/ui/dropdown-menu'
 import ProductFilter from '../../components/shopping-view/filter'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button } from '../../components/ui/button'
 import { ArrowUpDownIcon } from 'lucide-react'
 import { sortOptions } from '../../config/index'
+import { useDispatch, useSelector } from 'react-redux'
+import { handleAllFilteredProducts } from '../../store/shop/product-slice/index'
 
 const ShoppingListingPage = () => {
+  const dispatch = useDispatch();
+  const {productList} = useSelector((state) => state.shop_product_slice);
+  useEffect(() => {
+    dispatch(handleAllFilteredProducts())
+  }, [dispatch]);
+
+  console.log(productList);
   return (
     <div className='grid grid-cols-1 md:grid-cols-[300px_1fr] gap-6 p-4 md:p-6'>
       <ProductFilter/>
@@ -36,7 +45,7 @@ const ShoppingListingPage = () => {
           </div>
         </div>
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4'>
-          
+
         </div>
       </div>
     </div>
