@@ -1,11 +1,11 @@
-import { HousePlug, Menu, ShoppingCart } from 'lucide-react'
+import { HousePlug, LogOut, Menu, ShoppingCart, UserCog } from 'lucide-react'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet'
 import { Button } from '../ui/button'
 import { useSelector } from 'react-redux'
 import { shoppingViewHeaderMenuItems } from '../../config/index'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from '../ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu'
 import { Avatar, AvatarFallback } from '../ui/avatar'
 
 
@@ -20,8 +20,10 @@ function MenuItems(){
 }
 
 function HeaderRightContent(){
+  const {user} = useSelector((state) => state.auth_slice);
+  const navigate = useNavigate();
   return (
-    <div className='flex lg:items-center lg:flex-row flex-col gap-4'>
+    <div className='flex lg:items-center lg:flex-row flex-row gap-4'>
       <Button variant="outline" size="icon">
         <ShoppingCart className='w-6 h-6'/>
         <span className='sr-only'>User Cart</span>
@@ -29,20 +31,33 @@ function HeaderRightContent(){
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Avatar className="bg-black" size="icon">
-            <AvatarFallback className="bg-black text-white font-extrabold">JB</AvatarFallback>
+            <AvatarFallback className="bg-black text-white font-extrabold">{user?.userName.toUpperCase()}</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
-        <DropdownMenuContent side="right" className="w-56">
+        <DropdownMenuContent side="right" className="w-56 bg-white mt-2">
           <DropdownMenuLabel>
-            Logged in as
+            Logged in as {user?.userName.toUpperCase()}
           </DropdownMenuLabel>
+
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => navigate('/shop/account')} className='hover:bg-slate-300 cursor-pointer'>
+            <UserCog className='mr-2 h-4 w-4'/>
+            Account
+          </DropdownMenuItem>
+
+          <DropdownMenuSeparator />
+          <DropdownMenuItem className='hover:bg-slate-300 cursor-pointer' >
+            <LogOut className='mr-2 h-4 w-4'/>
+            Logout
+          </DropdownMenuItem>
+
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
   )
 }
 const ShoppingHeader = () => {
-  const {isAuthenticated, user} = useSelector((state) => state.auth_slice);
+  const {isAuthenticated} = useSelector((state) => state.auth_slice);
   return (
     <header className='sticky top-0 z-40 w-full border-b bg-gray-300'>
       <div className='flex h-16 items-center justify-between px-4 md:px-6'>
@@ -59,6 +74,7 @@ const ShoppingHeader = () => {
           </SheetTrigger>
           <SheetContent side="left" className="w-full bg-white max-w-xs" >
             <MenuItems />
+            <HeaderRightContent />
           </SheetContent>
         </Sheet>
 
@@ -67,7 +83,7 @@ const ShoppingHeader = () => {
         </div>
 
         {
-          isAuthenticated ? <div>
+          isAuthenticated ? <div className='hidden lg:block'>
             <HeaderRightContent />
           </div> : null
         }
