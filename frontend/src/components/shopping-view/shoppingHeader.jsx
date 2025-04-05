@@ -3,10 +3,11 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet'
 import { Button } from '../ui/button'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { shoppingViewHeaderMenuItems } from '../../config/index'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu'
 import { Avatar, AvatarFallback } from '../ui/avatar'
+import { logoutUser } from '../../store/auth-slice/authSlice'
 
 
 function MenuItems(){
@@ -21,6 +22,11 @@ function MenuItems(){
 
 function HeaderRightContent(){
   const {user} = useSelector((state) => state.auth_slice);
+
+  function handleLogout(){
+    dispatch(logoutUser());
+  }
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   return (
     <div className='flex lg:items-center lg:flex-row flex-row gap-4'>
@@ -46,7 +52,7 @@ function HeaderRightContent(){
           </DropdownMenuItem>
 
           <DropdownMenuSeparator />
-          <DropdownMenuItem className='hover:bg-slate-300 cursor-pointer' >
+          <DropdownMenuItem className='hover:bg-slate-300 cursor-pointer' onClick={handleLogout} >
             <LogOut className='mr-2 h-4 w-4'/>
             Logout
           </DropdownMenuItem>
