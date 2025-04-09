@@ -3,7 +3,7 @@ import { Card, CardContent, CardFooter } from '../ui/card'
 import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
 
-const ShoopingProductTile = ({product}) => {
+const ShoppingProductTile = ({product}) => {
   return (
     <Card className="w-full max-w-sm mx-auto">
       <div>
@@ -35,7 +35,7 @@ const ShoopingProductTile = ({product}) => {
           </div>
         </CardContent>
         <CardFooter>
-          <Button className="w-full">
+          <Button className="w-full bg-black text-white">
             Add to cart
           </Button>
         </CardFooter>
@@ -44,4 +44,4 @@ const ShoopingProductTile = ({product}) => {
   )
 }
 
-export default ShoopingProductTile;
+export default ShoppingProductTile;

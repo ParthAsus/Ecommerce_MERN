@@ -26,9 +26,9 @@ const shoppingProductSlice = createSlice({
       state.isLoading = true;
     })
     .addCase(handleAllFilteredProducts.fulfilled, (state, action) => {
-      console.log('Action Payload', action.payload);
+      console.log('Action Payload', action.payload.data);
       state.isLoading = false;
-      state.productList = action.payload;
+      state.productList = action.payload.data;
     })
     .addCase(handleAllFilteredProducts.rejected, (state, action) => {
       state.isLoading = false;
