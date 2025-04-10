@@ -44,12 +44,15 @@ const AdminProductsPage = () => {
   );
 
   function isFormDataFilled() { 
+    // return Object.keys(formData)
+    //   .map((key) => formData[key] !== null && formData[key] !== "" )
+    //   .every((item) => item);
     return Object.keys(formData)
-      .map((key) => formData[key] !== null && formData[key] !== "")
-      .every((item) => item);
+      .filter((key) => key !== 'salePrice')
+      .every((key) => formData[key] !== null && formData[key] !== "");
   }
 
-  // console.log(formData)  
+  console.log({formData})  
 
   function onSubmit(event) {
     event.preventDefault();
@@ -143,7 +146,7 @@ const AdminProductsPage = () => {
                 key={productItem._id}
                 product={productItem}
                 setCurrentEditedId={setCurrentEditedId}
-                setFormData={setFormData}
+                setFormData={setFormData}z
                 setOpenCreateProductDialog={setOpenCreateProductDialog}
                 handleOnDelete={handleOnDelete}
               />

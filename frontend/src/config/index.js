@@ -48,12 +48,14 @@ export const addProductFormElements = [
     componentType: "input",
     type: "text",
     placeholder: "Enter product title",
+    required: true,
   },
   {
     label: "Description",
     name: "description",
     componentType: "textarea",
     placeholder: "Enter product description",
+    required: true,
   },
   {
     label: "Category",
@@ -66,6 +68,7 @@ export const addProductFormElements = [
       { id: "accessories", label: "Accessories" },
       { id: "footwear", label: "Footwear" },
     ],
+    required: true,
   },
   {
     label: "Brand",
@@ -79,6 +82,7 @@ export const addProductFormElements = [
       { id: "zara", label: "Zara" },
       { id: "h&m", label: "H&M" },
     ],
+    required: true,
   },
   {
     label: "Price",
@@ -86,6 +90,7 @@ export const addProductFormElements = [
     componentType: "input",
     type: "number",
     placeholder: "Enter product price",
+    required: true,
   },
   {
     label: "Sale Price",
@@ -100,6 +105,7 @@ export const addProductFormElements = [
     componentType: "input",
     type: "number",
     placeholder: "Enter total stock",
+    required: true,
   },
 ];
 

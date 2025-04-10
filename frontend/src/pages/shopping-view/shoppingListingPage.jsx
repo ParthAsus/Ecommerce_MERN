@@ -23,7 +23,7 @@ const ShoppingListingPage = () => {
         <div className='p-4 border-b flex items-center justify-between'>
           <h2 className='text-lg font-extrabold'>All Products</h2>
           <div className='flex items-center gap-3'>
-            <span className='text-gray-400'>10 Products</span>
+            <span className='text-gray-400'>{productList?.length}</span>
             <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm" className="flex items-center gap-1">

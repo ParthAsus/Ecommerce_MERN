@@ -27,7 +27,7 @@ const CommonForm = ({ formControls, formData, setFormData, onSubmit, buttonText,
           placeholder={getControlItems.placeholder} 
           id={getControlItems.name} 
           type={getControlItems.type}
-          required
+          required={getControlItems.required}
           />
         )
         break;

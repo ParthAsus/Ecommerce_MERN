@@ -38,7 +38,7 @@ const ProductImageUpload = ({imageFile, setImageFile, uploadedImageUrl, setUploa
       setUploadedImageUrl(formData?.image);
       setImageFile(null);
     }
-  }, [currentEditedId, formData]);
+  }, [currentEditedId]);
 
   async function uploadImageToCloudinary(){
     setImageLoadingState(true);
