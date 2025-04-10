@@ -1,24 +1,79 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from '../../components/ui/dropdown-menu'
 import ProductFilter from '../../components/shopping-view/filter'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from '../../components/ui/button'
 import { ArrowUpDownIcon } from 'lucide-react'
 import { sortOptions } from '../../config/index'
 import { useDispatch, useSelector } from 'react-redux'
 import { handleAllFilteredProducts } from '../../store/shop/product-slice/index'
 import ShoppingProductTile from '../../components/shopping-view/product-tile'
+import { useSearchParams } from 'react-router-dom'
 
 const ShoppingListingPage = () => {
   const dispatch = useDispatch();
   const {productList} = useSelector((state) => state.shop_product_slice);
+  const [filters, setFilters] = useState({});
+  const [sort, setSort] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+
+  function handleSort(value){
+    setSort(value);
+    console.log(value);
+  };
+
+  function handleFilter(getSectionId, getCurrentOptions){
+    let copyFilters = {...filters};
+    const indexOfCurrentSection = Object.keys(copyFilters).indexOf(getSectionId);
+    if(indexOfCurrentSection === -1){
+      copyFilters = {
+        ...copyFilters,
+        [getSectionId]: [getCurrentOptions],
+      };
+    }else{
+      const indexOfCurrentOption = copyFilters[getSectionId].indexOf(getCurrentOptions);
+      if(indexOfCurrentOption === -1){
+        copyFilters[getSectionId].push(getCurrentOptions);
+      }else{
+        copyFilters[getSectionId].splice(getCurrentOptions, 1);
+      }
+    };
+    setFilters(copyFilters);
+    sessionStorage.setItem('filters', JSON.stringify(copyFilters));
+  };
+
+  function createSearchParamsHelper(filter){
+    const queryParams = [];
+    for(const [key, value] of Object.entries(filter)){
+      const paramValue = value.join(',');
+      queryParams.push(`${key}=${encodeURIComponent(paramValue)}`);
+    };
+
+    return queryParams.join('&');
+  }
+  
   useEffect(() => {
     dispatch(handleAllFilteredProducts())
   }, [dispatch]);
 
-  console.log(productList);
+  useEffect(() => {
+    setSort('price-lowtohigh');
+    setFilters(JSON.parse(sessionStorage.getItem('filters')) || {});
+  }, []);
+
+  useEffect(() => {
+    if(filters && Object.keys(filters).length > 0){
+      const createQueryString = createSearchParamsHelper(filters);
+      setSearchParams(new URLSearchParams(createQueryString));
+    }
+  }, [filters]);
+
+  // console.log('Filters', filters);
+  // console.log(searchParams.toString());
+  // console.log(productList);
   return (
     <div className='grid grid-cols-1 md:grid-cols-[300px_1fr] gap-6 p-4 md:p-6'>
-      <ProductFilter/>
+      <ProductFilter filters={filters} handleFilter={handleFilter} />
       <div className='bg-white w-full rounded-lg shadow-sm'>
         <div className='p-4 border-b flex items-center justify-between'>
           <h2 className='text-lg font-extrabold'>All Products</h2>
@@ -32,10 +87,10 @@ const ShoppingListingPage = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[200px] bg-white">
-              <DropdownMenuRadioGroup>
+              <DropdownMenuRadioGroup value={sort} onValueChange={handleSort}>
                 {
                   sortOptions.map(sortItem => (
-                    <DropdownMenuRadioItem key={sortItem?.id} className="hover:bg-slate-200 cursor-pointer">
+                    <DropdownMenuRadioItem value={sortItem.id} key={sortItem?.id} className="hover:bg-slate-200 cursor-pointer">
                       {sortItem?.label}
                     </DropdownMenuRadioItem>
                   ))

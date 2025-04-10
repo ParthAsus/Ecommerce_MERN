@@ -3,20 +3,20 @@ import { Card, CardContent, CardFooter } from '../ui/card'
 import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
 
-const ShoppingProductTile = ({product}) => {
+const ShoppingProductTile = ({ product }) => {
   return (
     <Card className="w-full max-w-sm mx-auto">
       <div>
         <div className='relative'>
-        <img src={product?.image} alt={product?.title} className='w-full h-[300px] object-cover rounded-t-lg' />
+          <img src={product?.image} alt={product?.title} className='w-full h-[300px] object-cover rounded-t-lg' />
 
-        {
-          product?.salePrice > 0 ? (
-            <Badge className="absolute top-2 left-2 bg-red-500 hover:bg-red-600">
-              Sale
-            </Badge>
-          ) : null
-        }
+          {
+            product?.salePrice > 0 ? (
+              <Badge className="absolute top-2 left-2 bg-red-500 hover:bg-red-600">
+                Sale
+              </Badge>
+            ) : null
+          }
         </div>
         <CardContent className="p-4">
           <h2 className='text-xl font-bold mb-2'>{product?.title}</h2>
@@ -26,12 +26,21 @@ const ShoppingProductTile = ({product}) => {
           </div>
 
           <div className='flex justify-between items-center mb-2'>
-            <span className={`${product?.salePrice > 0 ? 'line-through' : ''} text-lg font-semibold `}>{product?.price}</span>
-            {
+            <span className={`${product?.salePrice > 0 ? 'line-through' : ''} text-lg font-semibold `}>
+              {!product?.salePrice ? '$' : product?.price}
+              {/* {product?.price} */}
+            </span>
+            {/* {
               product?.salePrice > 0 ? (
-                <span className='text-lg font-semibold'>{product?.salePrice}</span>
+                <span className='text-lg font-semibold'>
+                  {product?.salePrice}
+                </span>
               ) : null
-            }
+            } */}
+            <span className='text-lg font-semibold'>
+              {product?.salePrice && product?.salePrice > 0 ? product?.salePrice : product?.price}
+            </span>
+
           </div>
         </CardContent>
         <CardFooter>
