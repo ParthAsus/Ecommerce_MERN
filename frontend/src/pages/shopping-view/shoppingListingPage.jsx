@@ -53,8 +53,10 @@ const ShoppingListingPage = () => {
   }
   
   useEffect(() => {
-    dispatch(handleAllFilteredProducts())
-  }, [dispatch]);
+    if(filters !== null && sort !== null){
+      dispatch(handleAllFilteredProducts({filterParams: filters, sortParams: sort}));
+    }
+  }, [dispatch, filters, sort]);
 
   useEffect(() => {
     setSort('price-lowtohigh');

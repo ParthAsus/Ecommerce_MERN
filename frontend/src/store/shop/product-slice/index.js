@@ -6,9 +6,21 @@ const initialState = {
   productList: [],
 }
 
-export const handleAllFilteredProducts = createAsyncThunk('/shop/products/getProducts', async() => {
+function createSearchParamsHelper(filter){
+  const queryParams = [];
+  for(const [key, value] of Object.entries(filter)){
+    const paramValue = value.join(',');
+    queryParams.push(`${key}=${encodeURIComponent(paramValue)}`);
+  };
+
+  return queryParams.join('&');
+}
+
+export const handleAllFilteredProducts = createAsyncThunk('/shop/products/getProducts', async({filterParams, sortParams}) => {
   try {
-    const response = await axiosInstance.get('/shop/products/getProducts');
+    const filterQuery = createSearchParamsHelper(filterParams);
+    const query = `${filterQuery}&sortBy=${sortParams}`;
+    const response = await axiosInstance.get(`/shop/products/getProducts?${query}`);
     return response.data;
   } catch (error) {
     console.log('Error in handleAllFilteredProducts -> shop_product_slice', error);
