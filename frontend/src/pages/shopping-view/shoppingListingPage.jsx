@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { handleAllFilteredProducts } from '../../store/shop/product-slice/index'
 import ShoppingProductTile from '../../components/shopping-view/product-tile'
 import { useSearchParams } from 'react-router-dom'
+import convertKeysToLowercase from '../../config/convertKeysToLowerCase'
 
 const ShoppingListingPage = () => {
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ const ShoppingListingPage = () => {
       if(indexOfCurrentOption === -1){
         copyFilters[getSectionId].push(getCurrentOptions);
       }else{
-        copyFilters[getSectionId].splice(getCurrentOptions, 1);
+        copyFilters[getSectionId].splice(indexOfCurrentOption, 1);
       }
     };
     setFilters(copyFilters);
@@ -54,7 +55,8 @@ const ShoppingListingPage = () => {
   
   useEffect(() => {
     if(filters !== null && sort !== null){
-      dispatch(handleAllFilteredProducts({filterParams: filters, sortParams: sort}));
+      const lowerCaseFilters = convertKeysToLowercase(filters);
+      dispatch(handleAllFilteredProducts({filterParams: lowerCaseFilters, sortParams: sort}));
     }
   }, [dispatch, filters, sort]);
 
