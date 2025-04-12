@@ -4,6 +4,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isLoading: false,
   productList: [],
+  productDetails: null,
 }
 
 function createSearchParamsHelper(filter){
@@ -29,6 +30,17 @@ export const handleAllFilteredProducts = createAsyncThunk('/shop/products/getPro
 });
 
 
+export const handleFetchGetProductDetailsById = createAsyncThunk('/shop/products/getProductDetails', async(id) => {
+  try {
+    const response = await axiosInstance.get(`shop/products/getProductDetails/${id}`);
+    return response.data;
+  } catch (error) {
+    console.log('Error in handleAllFilteredProducts -> shop_product_slice', error);
+    return error.response.data;
+  }
+});
+
+
 const shoppingProductSlice = createSlice({
   name: 'shop_product_slice',
   initialState,
@@ -45,6 +57,20 @@ const shoppingProductSlice = createSlice({
     .addCase(handleAllFilteredProducts.rejected, (state, action) => {
       state.isLoading = false;
       state.productList = [];
+    })
+
+
+    // for handleGetProductDetailsById
+    .addCase(handleFetchGetProductDetailsById.pending, (state, action) => {
+      state.isLoading = true;
+    })
+    .addCase(handleFetchGetProductDetailsById.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.productDetails = action.payload.data;
+    })
+    .addCase(handleFetchGetProductDetailsById.rejected, (state, action) => {
+      state.isLoading = false;
+      state.productDetails = null;
     })
   }
 });

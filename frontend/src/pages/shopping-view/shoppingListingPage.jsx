@@ -5,14 +5,14 @@ import { Button } from '../../components/ui/button'
 import { ArrowUpDownIcon } from 'lucide-react'
 import { sortOptions } from '../../config/index'
 import { useDispatch, useSelector } from 'react-redux'
-import { handleAllFilteredProducts } from '../../store/shop/product-slice/index'
+import { handleAllFilteredProducts, handleFetchGetProductDetailsById } from '../../store/shop/product-slice/index'
 import ShoppingProductTile from '../../components/shopping-view/product-tile'
 import { useSearchParams } from 'react-router-dom'
-import convertKeysToLowercase from '../../config/convertKeysToLowerCase'
+import convertKeysToLowercase from '../../config/convertKeysToLowercase'
 
 const ShoppingListingPage = () => {
   const dispatch = useDispatch();
-  const {productList} = useSelector((state) => state.shop_product_slice);
+  const {productList, productDetails} = useSelector((state) => state.shop_product_slice);
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -52,6 +52,16 @@ const ShoppingListingPage = () => {
 
     return queryParams.join('&');
   }
+
+  function handleGetProductDetailsById(ProductId){
+    console.log(ProductId)
+    dispatch(handleFetchGetProductDetailsById(ProductId));
+  };
+
+  useEffect(() => {
+    console.log('productDetails', productDetails);
+  }, [handleGetProductDetailsById]); 
+
   
   useEffect(() => {
     if(filters !== null && sort !== null){
@@ -107,7 +117,7 @@ const ShoppingListingPage = () => {
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4'>
           {productList && productList.length > 0 ? (
             productList.map((productItem) => (
-              <ShoppingProductTile key={productItem._id} product={productItem}/>
+              <ShoppingProductTile key={productItem._id} product={productItem} handleGetProductDetailsById={handleGetProductDetailsById} />
             ))
           ) : null}
         </div>
